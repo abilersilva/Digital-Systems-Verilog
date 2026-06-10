@@ -1,0 +1,64 @@
+`timescale 1ns/1ps
+
+module tb_state_machine;
+    logic clk = 0;
+    logic reset;
+    logic I, J;
+    logic Out;
+
+    state_machine dut (.*);
+    
+    // Clock de 100 MHz (período 10ns)
+    always #5 clk = ~clk;
+
+    initial begin
+        // Configuração do dump para EPWave
+        $dumpfile("dump.vcd");
+        $dumpvars(0, tb_state_machine);
+        
+        // Inicialização
+        reset = 1;
+        I = 0;
+        J = 0;
+        #20 reset = 0;
+        
+        // Sequência de teste completa
+        // S0 -> S1 (I=0)
+        #10 I = 0;
+        #10;
+        
+        // S1 -> S2 (I=0)
+        #10 I = 0;
+        #10;
+        
+        // S2 -> S3 (I=1)
+        #10 I = 1;
+        #10;
+        
+        // S3 -> S4 (I=0)
+        #10 I = 0;
+        #10;
+        
+        // S4 -> S5 (I=1)
+        #10 I = 1;
+        #10;
+        
+        // S5 -> S0 (I=0, J=0)
+        #10 I = 0; J = 0;
+        #10;
+        
+        // Teste adicional
+        #10 I = 1;
+        #10 J = 1;
+        #10;
+        
+        // Finalização com tempo suficiente
+        #100 $finish;
+    end
+
+    // Monitoramento para verificação
+    initial begin
+        $monitor("T=%0t: State=%0d I=%b J=%b Out=%b", 
+                 $time, dut.current_state, I, J, Out);
+    end
+endmodule

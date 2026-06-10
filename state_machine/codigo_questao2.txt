@@ -1,0 +1,45 @@
+#Ábiler Kauan Santana Lima Silva
+#Lucas André da Silva Nonato dos Santos
+#aldec riviera pro 2023.04
+module state_machine (
+    input  logic clk, reset,
+    input  logic I, J,
+    output logic Out
+);
+
+    // Estados da máquina com codificação explícita
+    typedef enum logic [2:0] {
+        S0 = 3'd0, 
+        S1 = 3'd1,
+        S2 = 3'd2,
+        S3 = 3'd3,
+        S4 = 3'd4,
+        S5 = 3'd5
+    } state_t;
+
+    (* fsm_encoding = "one_hot" *)
+    state_t current_state, next_state;
+
+    // Registrador de estado
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) current_state <= S0;
+        else current_state <= next_state;
+    end
+
+    // Lógica de próximo estado
+    always_comb begin
+        next_state = current_state;  // Mantém estado por padrão
+        unique case (current_state)
+            S0: if (I == 0) next_state = S1;
+            S1: if (I == 0) next_state = S2;
+            S2: if (I == 1) next_state = S3;
+            S3: if (I == 0) next_state = S4;
+            S4: if (I == 1) next_state = S5;
+            S5: if (I == 0 && J == 0) next_state = S0;
+        endcase
+    end
+
+    // Lógica de saída
+    assign Out = (current_state == S0);
+
+endmodule
