@@ -14,7 +14,7 @@ Inclui conversores de código, máquina de estados, calculadora e máquina de ve
 - Aldec Riviera PRO 2023.04  
 - EPWave para análise de ondas
   
-📌 Funcionalidades principais
+## 📌 Funcionalidades principais
 - Conversão entre diferentes códigos digitais
 - Simulação de máquina de estados com transições condicionais
 - Operações aritméticas básicas com tratamento de erros
