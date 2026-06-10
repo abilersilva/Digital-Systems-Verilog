@@ -1,0 +1,42 @@
+`timescale 1ns/1ps
+
+module tb;
+    logic clk = 0, reset;
+    logic coin25, coin50, coin100;
+    logic sel1, sel2, sel3, change_btn;
+    logic [7:0] saldo, change;
+    logic out1, out2, out3;
+
+    vending_machine dut (.*);
+    
+    always #5 clk = ~clk;  // 100MHz
+    
+    initial begin
+        $dumpfile("dump.vcd");
+        $dumpvars(0, tb);
+        reset = 1;
+        coin25 = 0;
+        coin50 = 0;
+        coin100 = 0;
+        {sel1, sel2, sel3} = 0;
+        change_btn = 0;
+        
+        #20 reset = 0;
+        
+        // Test sequence
+        #10 coin100 = 1; #10 coin100 = 0; // +R$1.00
+        #10 coin50  = 1; #10 coin50  = 0; // +R$0.50
+        #10 sel1   = 1; #10 sel1   = 0; // Buy item1
+        
+        #30;
+        
+        #10 coin100 = 1; #10 coin100 = 0; // +R$1.00
+        #10 change_btn = 1; #10 change_btn = 0; // Return change
+        
+        #30 $finish;
+    end
+    
+    initial begin
+        #200 $finish;  // Safety timeout
+    end
+endmodule
