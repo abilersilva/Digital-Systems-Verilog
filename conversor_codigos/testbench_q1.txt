@@ -1,0 +1,23 @@
+`timescale 1ns/1ps
+
+module tb_conversor_codigos;
+    reg [3:0] decimal_in;
+    reg [2:0] sel;
+    wire [4:0] code_out;
+
+    conversor_codigos uut (.decimal_in(decimal_in), .sel(sel), .code_out(code_out));
+
+    initial begin
+        $dumpfile("conversor_codigos.vcd");
+        $dumpvars(0, tb_conversor_codigos);
+
+        $display("Testando conversor_codigos");
+        decimal_in = 4'd5;
+
+        sel = 3'b000; #10;
+        sel = 3'b001; #10;
+        sel = 3'b111; #10;
+
+        $finish;
+    end
+endmodule

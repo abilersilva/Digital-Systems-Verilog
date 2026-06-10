@@ -1,0 +1,51 @@
+#Ábiler Kauan Santana Lima Silva
+#Lucas André da Silva Nonato dos Santos
+#aldec riviera pro 2023.04
+`timescale 1ns/1ps
+
+module conversor_codigos(
+    input [3:0] decimal_in,
+    input [2:0] sel,
+    output reg [4:0] code_out
+);
+
+always @(*) begin
+    case(sel)
+        3'b000: code_out = {1'b0, decimal_in}; // BCD 8421 padrão
+        3'b001: code_out = {1'b0, decimal_in + 4'd3}; // Excesso 3
+
+        // BCD7421 (exemplo, completar)
+        3'b010: case(decimal_in)
+                    4'd0: code_out = 5'b00000;
+                    4'd1: code_out = 5'b00001;
+                    default: code_out = 5'bxxxxx;
+                endcase
+
+        // BCD5211 (exemplo, completar)
+        3'b011: case(decimal_in)
+                    4'd0: code_out = 5'b00000;
+                    4'd1: code_out = 5'b00001;
+                    default: code_out = 5'bxxxxx;
+                endcase
+
+        // BCD2421 (exemplo, completar)
+        3'b100: case(decimal_in)
+                    4'd0: code_out = 5'b00000;
+                    4'd1: code_out = 5'b00001;
+                    default: code_out = 5'bxxxxx;
+                endcase
+
+        // Johnson (exemplo ilustrativo)
+        3'b101: code_out = {decimal_in[0], decimal_in};
+
+        // 2 entre 5 (exemplo)
+        3'b110: code_out = 5'b00110;
+
+        // Gray
+        3'b111: code_out = {1'b0, (decimal_in >> 1) ^ decimal_in};
+
+        default: code_out = 5'bxxxxx;
+    endcase
+end
+
+endmodule
