@@ -1,5 +1,4 @@
 #Ábiler Kauan Santana Lima Silva
-#Lucas André da Silva Nonato dos Santos
 #aldec riviera pro 2023.04
 module state_machine (
     input  logic clk, reset,
