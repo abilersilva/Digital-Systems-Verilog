@@ -1,0 +1,61 @@
+`timescale 1ns/1ps
+
+module tb_calculator;
+    reg [7:0] A, B;
+    reg [1:0] op;
+    wire [15:0] result;
+    wire error;
+    
+    calculator uut (
+        .A(A),
+        .B(B),
+        .op(op),
+        .result(result),
+        .error(error)
+    );
+    
+    initial begin
+        // Configurar dump de onda (CORREÇÃO)
+        $dumpfile("tb_calculator.vcd");
+        $dumpvars(0, tb_calculator);
+        
+        $display("===== Teste da Calculadora =====");
+        
+        // Teste de adição
+        A = 8'd50;
+        B = 8'd25;
+        op = 2'b00; // +
+        #10;
+        $display("%d + %d = %d (Esperado: 75)", A, B, result);
+        
+        // Teste de subtração
+        A = 8'd100;
+        B = 8'd45;
+        op = 2'b01; // -
+        #10;
+        $display("%d - %d = %d (Esperado: 55)", A, B, result);
+        
+        // Teste de multiplicação
+        A = 8'd12;
+        B = 8'd10;
+        op = 2'b10; // *
+        #10;
+        $display("%d * %d = %d (Esperado: 120)", A, B, result);
+        
+        // Teste de divisão
+        A = 8'd200;
+        B = 8'd50;
+        op = 2'b11; // /
+        #10;
+        $display("%d / %d = %d (Esperado: 4)", A, B, result);
+        
+        // Teste de erro (divisão por zero)
+        A = 8'd100;
+        B = 8'd0;
+        op = 2'b11; // /
+        #10;
+        $display("Divisão por zero: error = %b (Esperado: 1)", error);
+        
+        $finish;
+    end
+endmodule

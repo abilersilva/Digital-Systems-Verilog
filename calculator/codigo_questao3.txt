@@ -1,0 +1,29 @@
+#Ábiler Kauan Santana Lima Silva
+#Lucas André da Silva Nonato dos Santos
+#aldec riviera pro 2023.04
+// Calculadora para números inteiros de 8 bits
+module calculator(
+    input [7:0] A,          // Operando A (8 bits)
+    input [7:0] B,          // Operando B (8 bits)
+    input [1:0] op,         // Operação (00:+, 01:-, 10:*, 11:/)
+    output reg [15:0] result, // Resultado (16 bits)
+    output reg error         // Erro (divisão por zero)
+);
+
+always @(*) begin
+    error = 1'b0;
+    case(op)
+        2'b00: result = A + B;  // Adição
+        2'b01: result = A - B;  // Subtração
+        2'b10: result = A * B;  // Multiplicação
+        2'b11: begin            // Divisão
+            if (B == 0) begin
+                result = 0;
+                error = 1'b1;
+            end else begin
+                result = A / B; // Quociente inteiro
+            end
+        end
+    endcase
+end
+endmodule
